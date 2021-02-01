@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imagen;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
 class ImagenController extends Controller
@@ -31,6 +32,34 @@ class ImagenController extends Controller
             ];
 
             return response()->json($respuesta);
+        }
+    }
+
+    public function destroy(Request $request)
+    {
+        if ($request->ajax()) {
+
+            $imagen = $request->get('imagen'); // obtener la imagen
+
+            if (File::exists('storage/' . $imagen)) {
+                File::delete('storage/' . $imagen); // eliminar la imagen si existe
+
+                // eliminar registro de la db
+                Imagen::where('ruta_imagen', '=', $imagen)->delete();
+
+                //* alternativa a eliminar
+                //$imagenEliminar = Imagen::where('ruta_imagen', '=', //$imagen)->firstOrFail();
+                //Imagen::destroy($imagenEliminar->id);
+
+                $respuesta = [
+                    'imagen_eliminar' => $imagen
+                ];
+
+                return response()->json($respuesta);
+            }
+
+
+            return response()->json(['imagen_eliminar' => false]);
         }
     }
 }

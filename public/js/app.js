@@ -49938,9 +49938,12 @@ __webpack_require__.r(__webpack_exports__);
   !*** ./resources/js/dropzone.js ***!
   \**********************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-// Configuracion del editor
+var _require = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"),
+    axios = _require["default"]; // Configuracion del editor
+
+
 document.addEventListener("DOMContentLoaded", function () {
   // ejecutar el codigo solo si existe el id
   if (document.getElementById("dropzone")) {
@@ -49950,21 +49953,45 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var dropzone = new Dropzone("div#dropzone", {
       url: "/imagenes/store",
+      // peticion a la ruta
       dictDefaultMessage: "Sube hasta 10 imagenes",
       maxFiles: 10,
+      // maximo de imagenes
       required: true,
       acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
+      addRemoveLinks: true,
+      // habilitar el eliminar imagenes
+
+      /* todos los dict son para traduccion */
+      dictRemoveFile: "Remover Imagen",
       headers: {
-        // pasar el token por headers
+        // pasar siempre el token
         "X-CSRF_TOKEN": csrf_token
       },
-      success: function success(file, response) {
-        console.log(response);
+      //* Se ejecuta con la respuesta del servidor
+      success: function success(file, respuesta) {
+        // agregando el nombre de la imagen a dropzone para luego ser usada en el metodo de eliminar
+        file.nombreImagen = respuesta.archivo;
       },
+      //* se ejecuta enviando la peticion al servidor
       sending: function sending(file, xhr, formData) {
         var inputDropzone = document.getElementById("uuid").value; // agregar datos al formData para enviarlos al servidor
 
         formData.append("uuid", inputDropzone); // .todo lo que se agrege en este objeto sera recibido en el servidor
+      },
+      //* Se ejecuta cuando se elimina un archivo
+      removedfile: function removedfile(file, respuesta) {
+        var nombreImg = file.nombreImagen; // accediendo al nombre de la imagen
+
+        var params = {
+          imagen: nombreImg
+        };
+        axios.post("/imagenes/destroy", params).then(function (respuesta) {
+          // eliminar imagen del dom, desde el padre hacia el hijo
+          file.previewElement.parentElement.removeChild(file.previewElement);
+        })["catch"](function (error) {
+          return console.log(error);
+        });
       }
     });
   }
@@ -49981,8 +50008,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("mapa")) {
-    var lat = 4.441358389095973;
-    var lng = -75.21648252029992;
+    var lat = 4.7645759;
+    var lng = -74.0412296;
     var mapa = L.map("mapa").setView([lat, lng], 16);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

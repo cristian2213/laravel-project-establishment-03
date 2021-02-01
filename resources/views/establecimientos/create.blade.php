@@ -20,7 +20,10 @@
         <h1>Registrar Establecimiento</h1>
 
         <div class="row justify-content-center mt-5">
-            <form action="" class="col-xs-12 col-md-9 card card-body">
+            <form action="{{ route('establecimientos.store') }}" method="POST" class="col-xs-12 col-md-9 card card-body"
+                enctype="multipart/form-data">
+
+                @csrf
 
                 <fieldset class="border p-4 mb-4">
                     <legend class="text-primary text-center font-weight-bold">Nombre, Categoria e Imagen Pricipal</legend>
@@ -40,19 +43,22 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="categoria">Categorias</label>
-                        <select name="categoria" id="categoria"
-                            class="form-control @error('categoria_id') is-invalid @enderror">
-                            <option value="" selected disabled>-- Selecciona --</option>
+                        <label for="categoria_select">Categorias</label>
+
+                        <select name="categoria_select" id="categoria_select"
+                            class="form-control @error('categoria_select') is-invalid @enderror">
+
+                            <option value="" selected>-- Selecciona --</option>
                             @foreach ($categorias as $categoria)
-                                <option {{ old('categoria_id') == $categoria->id ? 'selected' : '' }}
+                                <option {{ old('categoria_select') == $categoria->id ? 'selected' : '' }}
                                     value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
                             @endforeach
                         </select>
 
-                        @error('categoria')
+                        @error('categoria_select')
                             <div class="invalid-feedback">
                                 {{ $message }}
+
                             </div>
                         @enderror
 
@@ -60,11 +66,12 @@
 
                     <div class="form-group">
                         <label for="imagen_pricipal">Imagen Pricipal</label>
-                        <input type="file" name="imagen_pricipal" id="imagen_pricipal"
-                            class="form-control @error('imagen_pricipal') is-invalid @enderror"
-                            value="{{ old('imagen_pricipal') }}" accept="image/*">
 
-                        @error('imagen_pricipal')
+                        <input type="file" name="imagen_principal" id="imagen_pricipal"
+                            class="form-control @error('imagen_principal') is-invalid @enderror"
+                            value="{{ old('imagen_principal') }}" accept="image/*">
+
+                        @error('imagen_principal')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -77,7 +84,7 @@
                 <fieldset class="border p-4 mb-4 mt-5">
                     <legend class="text-primary text-center font-weight-bold">Ubicación</legend>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="form_buscador">Coloca la dirección del Establecimiento</label>
                         <input type="text" name="form_buscador" id="form_buscador"
                             placeholder="Calle del Negocio o Establecimiento" class="form-control">
@@ -91,12 +98,12 @@
 
                     <p class="informacion">
                         Confirma que los siguientes campos son correctos
-                    </p>
-
+                    </p> --}}
                     <div class="form-group">
                         <label for="direccion">dirección</label>
+
                         <input type="text" id="direccion" placeholder="Dirreción" value="{{ old('direccion') }}"
-                            name="direccion" class="form-control">
+                            name="direccion" class="form-control @error('direccion') is-invalid @enderror">
 
                         @error('direccion')
                             <div class="invalid-feedback">
@@ -106,20 +113,19 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="colonia">Barrio</label>
-                        <input type="text" id="colonia" placeholder="Dirreción" value="{{ old('colonia') }}"
-                            name="barrio" class="form-control">
+                        <label for="barrio">Barrio</label>
+                        <input type="text" id="barrio" placeholder="Dirreción" value="{{ old('barrio') }}" name="barrio"
+                            class="form-control @error('barrio') is-invalid @enderror">
 
-                        @error('colonia')
+                        @error('barrio')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                         @enderror
                     </div>
+                    {{-- <input type="hidden" name="lat" id="lat" value="{{ old('lat') }}">
 
-                    <input type="hidden" name="lat" id="lat" value="{{ old('lat') }}">
-
-                    <input type="hidden" name="lng" id="lng" value="{{ old('lng') }}">
+                    <input type="hidden" name="lng" id="lng" value="{{ old('lng') }}"> --}}
                 </fieldset>
 
 
@@ -176,7 +182,7 @@
 
 
                 <fieldset class="border p-4 mt-5">
-                    <legend class="text-primary">Información Establecimiento: </legend>
+                    <legend class="text-primary">Imagenes del establecimiento: </legend>
                     <div class="form-group">
                         <label for="imagenes">Imagenes</label>
                         {{-- aqui se coloca dropzone --}}

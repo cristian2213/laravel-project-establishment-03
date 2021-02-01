@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Categoria;
 use App\Establecimiento;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class EstablecimientoController extends Controller
 {
@@ -37,7 +38,55 @@ class EstablecimientoController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
+        // validar que la categoria existe
+        // valida que la hora sea despues de la apertura
+
+
+        $data = $request->validate([
+            'nombre' => 'required',
+            'categoria_select' => 'required|exists:App\Categoria,id',
+            'imagen_principal' => 'required|image|max:1000',
+            'direccion' => 'required|string',
+            'barrio' => 'required|string',
+            /* 'lat' => 'required',
+            'lng' => 'required', */
+            'telefono' => 'required|numeric',
+            'descripcion' => 'required|min:100',
+
+            'apertura' => 'date_format:H:i',
+            'cierre' => 'date_format:H:i|after:apertura',
+            'uuid' => 'required',
+
+        ]);
+
+        // guardar imagen usando intevation image
+        $ruta_imagen = $request['imagen_principal']->store('imgs_pricipales', 'public');
+
+        $imagen = Image::make(public_path("storage/{$ruta_imagen}"))->fit(800, 600);
+
+        $imagen->save();
+
+
+        // guardar en la db (un solo usuario puede registrar un solo establecimiento)
+        auth()->user()->establecimiento()->create([
+            'nombre' => $data['nombre'],
+            'categoria_id' => $data['categoria_select'],
+            'imagen_principal' => $ruta_imagen,
+            'direccion' => $data['direccion'],
+            'colonia' => $data['barrio'],
+            /*  'lat' => $data['lat'],
+            'lng' => $data['lng'], */
+            'telefono' => $data['telefono'],
+            'descripcion' => $data['descripcion'],
+
+            'apertura' => $data['apertura'],
+            'cierre' => $data['cierre'],
+            'uuid' => $data['uuid']
+
+        ]);
+
+
+        return back()->with('estado', 'Tu información se almacenó correctamente ');
     }
 
     /**

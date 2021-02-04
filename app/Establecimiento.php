@@ -20,4 +20,10 @@ class Establecimiento extends Model
         'cierre',
         'uuid'
     ];
+
+    // relacion 1:1 de establecimiento a categoria Fk
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class);
+    }
 }

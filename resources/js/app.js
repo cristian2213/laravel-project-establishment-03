@@ -4,6 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import store from "./store/index.js";
+
 require("./bootstrap");
 
 window.Vue = require("vue");
@@ -20,8 +22,8 @@ window.Vue = require("vue");
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component(
-    "example-component",
-    require("./components/ExampleComponent.vue").default
+    "pagina-inicio",
+    require("./components/PaginaInicio.vue").default
 );
 
 /**
@@ -31,6 +33,7 @@ Vue.component(
  */
 
 const app = new Vue({
+    store,
     el: "#app"
 });
 

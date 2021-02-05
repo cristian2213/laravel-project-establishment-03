@@ -4,12 +4,12 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import store from "./store/index.js";
-
 require("./bootstrap");
 
 window.Vue = require("vue");
 
+import store from "./store/index.js";
+import router from "./router/router.js";
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -34,6 +34,7 @@ Vue.component(
 
 const app = new Vue({
     store,
+    router,
     el: "#app"
 });
 

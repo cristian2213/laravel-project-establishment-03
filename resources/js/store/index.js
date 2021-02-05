@@ -1,54 +1,23 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+// methods
+import storeMutations from "./mutations.js";
+import storeActions from "./actions.js";
+import storeGetters from "./getters.js";
+
 Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         cafes: [],
         restaurantes: [],
-        hoteles: []
-    },
-    mutations: {
-        agregarCafes(state, payload) {
-            state.cafes = payload;
-        },
-
-        agregarRestaurantes(state, payload) {
-            state.restaurantes = payload;
-        },
-
-        agregarHoteles(state, payload) {
-            state.hoteles = payload;
-        }
+        hoteles: [],
+        establecimiento: {}
     },
 
-    actions: {
-        agregarCafes(context, payload) {
-            context.commit("agregarCafes", payload);
-        },
-
-        agregarRestaurantes(context, payload) {
-            context.commit("agregarRestaurantes", payload);
-        },
-
-        agregarHoteles(context, payload) {
-            context.commit("agregarHoteles", payload);
-        }
-    },
-
-    getters: {
-        obtenerCafes(state) {
-            return state.cafes;
-        },
-
-        obtenerRestaurantes(state) {
-            return state.restaurantes;
-        },
-
-        obtenerHoteles(state) {
-            return state.hoteles;
-        }
-    }
+    mutations: storeMutations,
+    actions: storeActions,
+    getters: storeGetters
 });
 
 export default store;

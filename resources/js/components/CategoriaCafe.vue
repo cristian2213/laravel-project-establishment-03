@@ -17,7 +17,11 @@
               <span class="font-weight-bold">Horario:</span>
               {{ cafe.apertura }} - {{ cafe.cierre }}
             </p>
-            <a href="#" class="btn btn-primary btn-block">Ver Lugar</a>
+            <router-link
+              :to="establecimientoLink(cafe.id)"
+              class="btn btn-primary btn-block"
+              >Ver lugar</router-link
+            >
           </div>
         </div>
       </div>
@@ -30,6 +34,15 @@ export default {
   computed: {
     cafes() {
       return this.$store.getters.obtenerCafes;
+    },
+  },
+
+  methods: {
+    establecimientoLink(cafeId) {
+      return {
+        name: "establecimiento",
+        params: { id: cafeId },
+      };
     },
   },
 

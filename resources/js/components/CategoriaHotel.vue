@@ -17,7 +17,11 @@
               <span class="font-weight-bold">Horario:</span>
               {{ hotel.apertura }} - {{ hotel.cierre }}
             </p>
-            <a href="#" class="btn btn-primary btn-block">Ver Lugar</a>
+            <router-link
+              :to="establecimientoLink(hotel.id)"
+              class="btn btn-primary btn-block"
+              >Ver lugar</router-link
+            >
           </div>
         </div>
       </div>
@@ -30,6 +34,15 @@ export default {
   computed: {
     hoteles() {
       return this.$store.getters.obtenerHoteles;
+    },
+  },
+
+  methods: {
+    establecimientoLink(hotelId) {
+      return {
+        name: "establecimiento",
+        params: { id: hotelId },
+      };
     },
   },
 

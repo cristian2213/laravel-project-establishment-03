@@ -13,5 +13,9 @@ export default {
 
     agregarEstablecimiento(state, payload) {
         state.establecimiento = payload;
+    },
+
+    agregarEstablecimientos(state, payload) {
+        state.establecimientos = payload;
     }
 };

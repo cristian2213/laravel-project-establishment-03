@@ -10,7 +10,7 @@ class Kernel extends HttpKernel
      * The application's global HTTP middleware stack.
      *
      * These middleware are run during every request to your application.
-     *
+     * //* estos midleware son ejecutados en todas la peticoines de la aplicacion
      * @var array
      */
     protected $middleware = [
@@ -21,11 +21,14 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+
+        //* registrando nuestro propio midleware
+        //\App\Http\Middleware\RevisarEstablecimiento::class
     ];
 
     /**
      * The application's route middleware groups.
-     *
+     * //* Ejecuta todas las peticiones que se encuentre en el archivo web.php y api.php
      * @var array
      */
     protected $middlewareGroups = [
@@ -37,6 +40,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+
         ],
 
         'api' => [
@@ -49,7 +53,7 @@ class Kernel extends HttpKernel
      * The application's route middleware.
      *
      * These middleware may be assigned to groups or used individually.
-     *
+     * //* Se ejecuta en una ruta o en grupo de rutas
      * @var array
      */
     protected $routeMiddleware = [
@@ -63,5 +67,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        // registrando middleware 
+        'revisar' =>  \App\Http\Middleware\RevisarEstablecimiento::class
     ];
 }

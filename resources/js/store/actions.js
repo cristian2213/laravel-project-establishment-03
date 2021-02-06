@@ -13,5 +13,9 @@ export default {
 
     agregarEstablecimiento(context, payload) {
         context.commit("agregarEstablecimiento", payload);
+    },
+
+    agregarEstablecimientos(context, payload) {
+        context.commit("agregarEstablecimientos", payload);
     }
 };

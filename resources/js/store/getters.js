@@ -13,5 +13,13 @@ export default {
 
     obtenerEstablecimiento(state) {
         return state.establecimiento;
+    },
+
+    obtenerImagenes(state) {
+        return state.establecimiento.imagenes;
+    },
+
+    obtenerEstablecimientos(state) {
+        return state.establecimientos;
     }
 };

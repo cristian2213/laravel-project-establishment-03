@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Imagen;
 use App\Categoria;
 use App\Establecimiento;
 use Illuminate\Http\Request;
 
 class APIController extends Controller
 {
+    // obtener todos los establecimientos
+    public function index()
+    {
+        // consulta Eager Loading, permite obtener varias relaciones en la misma consulta
+        $establecimientos = Establecimiento::with('categoria')->get();
+        return response()->json($establecimientos);
+    }
+
     // obtener todas las categorias
     public function categorias()
     {
@@ -27,6 +36,11 @@ class APIController extends Controller
 
     public function show(Establecimiento $establecimiento)
     {
+        $imagenes = Imagen::where('id_establecimiento', $establecimiento->uuid)->get();
+
+        // asignar valores al arreglo
+        $establecimiento->imagenes = $imagenes;
+
         return $establecimiento;
     }
 }

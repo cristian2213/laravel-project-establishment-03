@@ -7,12 +7,14 @@ import storeActions from "./actions.js";
 import storeGetters from "./getters.js";
 
 Vue.use(Vuex);
+
 const store = new Vuex.Store({
     state: {
         cafes: [],
         restaurantes: [],
         hoteles: [],
-        establecimiento: {}
+        establecimiento: {},
+        establecimientos: []
     },
 
     mutations: storeMutations,

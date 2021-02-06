@@ -25,6 +25,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 // pasar siempre el token
                 "X-CSRF_TOKEN": csrf_token
             },
+            // Se ejecuta cuando se crea la instancia de Dropzone
+            init: function() {
+                const imagenes = document.querySelectorAll(".galeria");
+
+                if (imagenes.length > 0) {
+                    imagenes.forEach(imagen => {
+                        const imagenPublicada = {};
+
+                        imagenPublicada.size = 1;
+                        imagenPublicada.name = imagen.value;
+                        imagenPublicada.nombreImagen = imagen.value;
+
+                        this.options.addedfile.call(this, imagenPublicada);
+                        this.options.thumbnail.call(
+                            this,
+                            imagenPublicada,
+                            `/storage/${imagenPublicada.name}`
+                        );
+
+                        imagenPublicada.previewElement.classList.add(
+                            "dz-success"
+                        );
+
+                        imagenPublicada.previewElement.classList.add(
+                            "dz-complete"
+                        );
+                    });
+                }
+            },
 
             //* Se ejecuta con la respuesta del servidor
             success: function(file, respuesta) {
@@ -44,8 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
             removedfile: function(file, respuesta) {
                 const nombreImg = file.nombreImagen; // accediendo al nombre de la imagen
 
+                console.log(nombreImg);
                 const params = {
-                    imagen: nombreImg
+                    imagen: nombreImg,
+                    uuid: document.getElementById("uuid").value
                 };
 
                 axios

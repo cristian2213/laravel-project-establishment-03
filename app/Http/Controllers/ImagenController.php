@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imagen;
+use App\Establecimiento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
@@ -39,7 +40,13 @@ class ImagenController extends Controller
     {
         if ($request->ajax()) {
 
-            $imagen = $request->get('imagen'); // obtener la imagen
+            // obtener la uuid para verificar que exista el establecimiento
+            $uuid = $request->get('uuid');
+            $establecimiento = Establecimiento::where('uuid', $uuid)->first();
+
+            $this->authorize('delete', $establecimiento);
+
+            $imagen = $request->get('imagen'); // obtener la ruta de la imagen
 
             if (File::exists('storage/' . $imagen)) {
                 File::delete('storage/' . $imagen); // eliminar la imagen si existe

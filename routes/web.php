@@ -19,9 +19,11 @@ Route::get('/', 'InicioController')->name('inicio');
 Auth::routes(['verify' => true]);
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('/establecimientos/create', 'EstablecimientoController@create')->name('establecimientos.create');
+    Route::get('/establecimientos/create', 'EstablecimientoController@create')->name('establecimientos.create')->middleware('revisar'); // usando middleware personalizado
+
     Route::post('/establecimientos', 'EstablecimientoController@store')->name('establecimientos.store');
-    Route::get('/establecimientos/{establecimiento}/edit', 'EstablecimientoController@edit')->name('establecimientos.edit');
+    Route::get('/establecimiento/{establecimiento}/edit', 'EstablecimientoController@edit')->name('establecimientos.edit');
+    Route::put('/establecimientos/{establecimiento}', 'EstablecimientoController@update')->name('establecimientos.update');
 
     //********* Imagen
     Route::post('/imagenes/store', 'ImagenController@store')->name('imagenes.store');

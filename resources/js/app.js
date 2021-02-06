@@ -10,7 +10,9 @@ window.Vue = require("vue");
 
 import store from "./store/index.js";
 import router from "./router/router.js";
+import "leaflet/dist/leaflet.css";
 /**
+ *
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
  * components and automatically register them with their "basename".

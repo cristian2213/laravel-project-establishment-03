@@ -24,8 +24,8 @@
 
 <body>
     @if (session('estado'))
-        <div class="alert alert-primary" role="alert">
-            Tu informacion se almaceno correctamente
+        <div class="alert alert-primary" id="alert-sesion" role="alert">
+            {{ session('estado') }}
         </div>
 
     @endif
@@ -68,8 +68,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                                         document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                                                                             document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -90,6 +91,16 @@
     </div>
 
     @yield('scripts')
+    <script defer>
+        const alertSesion = document.getElementById('alert-sesion');
+
+        if (alertSesion) {
+            setTimeout(() => {
+                alertSesion.remove();
+            }, 3000);
+        }
+
+    </script>
 </body>
 
 </html>
